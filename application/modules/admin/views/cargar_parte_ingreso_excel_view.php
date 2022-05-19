@@ -71,7 +71,7 @@
                     <h4>ITEMS DEL PARTE DE INGRESO CARGADO EN EXCEL</h4>
                 </div>
                 <div class="panel-body table-responsive">
-                    <table class="table danger table-striped no-margin text-center" id="tbl_excel" class="display">
+                    <table class="table danger text-center display" id="tbl_excel">
                         <thead>
                             <tr>
                                 <th style="text-align:center">ID</th>
@@ -127,8 +127,8 @@ $(document).ready(function() {
     $('.js-example-basic-single').select2()
     $('.js-example-basic-single2').select2()
     var table = $('#tbl_excel').DataTable({
-
         scrollX: true,
+        responsive: true,
         "dom": "<'row'<'col-sm-3'B><'col-sm-3 text-center'l><'col-sm-6'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -139,7 +139,7 @@ $(document).ready(function() {
         }],
         "ajax": {
             url: "<?php echo site_url('admin/inventario/get_items_parte_ingreso_excel'); ?>",
-            type: "post"
+            type: "get"
         },
         "columns": [{
                 "data": "id"

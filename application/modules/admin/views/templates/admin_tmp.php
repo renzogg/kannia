@@ -37,7 +37,6 @@
     <script src="<?php echo base_url(); ?>static/main/jquery.min.js"></script>
     <script src="<?php echo base_url(); ?>static/main/js/jquery.qtip.js"></script>
     <script src="<?php echo base_url(); ?>static/main/js/bootstrap.min.js"></script>
-    <script src="<?php echo base_url(); ?>static/main/select2.min.js"></script>
     <!-- <script src="<?php echo base_url(); ?>static/main/bootstrap.bundle.min.js"></script> -->
     <script src="<?php echo base_url(); ?>static/main/js/scrollup.min.js"></script>
     <!--Scripts de bootstraps  -->
@@ -58,9 +57,7 @@
     <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
     <!--Script de Datatables  -->
     <!-- Para el avioncito-->
-    <script src="<?php echo base_url(); ?>static/main/js/scrollup.min.js"></script>
-    <!-- <script src="<?php echo base_url(); ?>static/main/js/bootstrap.min.js"></script> -->
-    <!-- <script src="<?php echo base_url(); ?>static/main/js/scrollup.min.js"></script> -->
+
     <script src="<?php echo base_url(); ?>static/main/js/themeSwitcher.js"></script>
     <script src="<?php echo base_url(); ?>static/main/js/common.js"></script>
     <script src="<?php echo base_url(); ?>static/main/admin.plugins.js"></script>
@@ -69,7 +66,16 @@
     <!-- <script src="<?php echo base_url(); ?>static/main/metro.min.js"></script> -->
     <!-- script botton style -->
     <!-- script botton style -->
+
+
+
+
+
+
+
+
     <script src="<?php echo base_url(); ?>static/main/sweetalert.js"></script>
+    <script src="<?php echo base_url(); ?>static/main/select2.min.js"></script>
     <!-- script botton style -->
 
 </head>

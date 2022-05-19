@@ -56,9 +56,17 @@ $(document).ready(function() {
             },
             {
                 "data": function(e) {
+                    // console.log(e)
+                    if (e.fecha_lectura == "") {
+                        return "<input id='" + e.id +
+                            "' class='btn btn-success' type='button'  onclick = 'inventariar(" +
+                            '"' + e.cod_rfid.toString() + '",' + e.id +")' value='Inventariar'>";
+                    } else {
+                        return "<input id='" + e.id +
+                            "' class='btn btn-danger' type='button'  onclick = 'desinventariar(" +
+                            '"' + e.cod_rfid.toString() + '",' + e.id +")' value='Desinventariar'>";
+                    }
 
-                    return "<input class='btn btn-success' type='button'  onclick = 'inventariar(" +
-                        '"' + e.cod_rfid.toString() + '"' + ")' value='Inventarir'>";
                 }
             }
 
@@ -66,7 +74,6 @@ $(document).ready(function() {
         "bdestroy": true,
         "rowCallback": function(row, data, index) {
             if (data['fecha_lectura'] != "") {
-
                 $('td', row).css('background-color', 'Palegreen');
                 document.getElementById("caja_encontrados").textContent = data['c_encontrados'];
                 document.getElementById("caja_no_encontrados").textContent = data[
@@ -127,7 +134,7 @@ $("body").on("click", ".btn_finalizar", function() {
         <?php echo $id_inventario; ?>);
 });
 
-function inventariar(cod_rfid) {
+function inventariar(cod_rfid, id) {
     console.log(cod_rfid)
     var settings = {
         "url": "https://kannia.solutionsgg.com/api/enviarpaleta_plataforma.php",
@@ -144,7 +151,74 @@ function inventariar(cod_rfid) {
         }),
     };
 
+
+
+
     $.ajax(settings).done(function(response) {
+
+        let item = document.getElementById(id)
+        item.value="Desinventariar"
+        item.className="btn btn-danger"
+        item.setAttribute('onclick','desinventariar('+cod_rfid+','+id+')')
+        let list = item.parentElement.parentElement.getElementsByTagName("td")
+        for(ind in list){
+            if(ind<list.length){
+                items =list[ind]
+                items.style.backgroundColor="palegreen";
+            }
+        
+        }
+        Swal.fire({
+            position: 'center-center',
+            icon: 'success',
+            title: 'Inventariado',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        console.log(response);
+    });
+}
+function desinventariar(cod_rfid, id) {
+    console.log(cod_rfid)
+    var settings = {
+        "url": "https://kannia.solutionsgg.com/api/enviarpaleta_plataforma2.php",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "tipo": "M",
+            "tags": cod_rfid.toString(),
+            "mac": "[RFID->00:00:00:00:00:00]",
+            "fecha": "2022-05-17 21:34:00"
+        }),
+    };
+
+
+
+
+    $.ajax(settings).done(function(response) {
+
+        let item = document.getElementById(id)
+        item.value="Inventariar"
+        item.className="btn btn-success"
+        item.setAttribute('onclick','inventariar('+cod_rfid+','+id+')')
+        let list = item.parentElement.parentElement.getElementsByTagName("td")
+        for(ind in list){
+            if(ind<list.length){
+                items =list[ind]
+                items.style.backgroundColor="rgb(255, 161, 155)";
+            }
+        
+        }
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Desinventariado',
+            showConfirmButton: false,
+            timer: 1000
+        })
         console.log(response);
     });
 }

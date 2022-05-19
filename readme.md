@@ -1,1 +1,5 @@
-# en la carpeta core comienza la ruta de los controladores y modelos
+# TEMPLATE KANNIA
+# PARTES
+    * Se utiliza las librerias
+    - codeignaiter
+    - bootstrap
