@@ -1,0 +1,57 @@
+/*jquery.alert*/
+#popup_container,.popup_container
+{ font-size:12px;
+  min-width:300px;
+  max-width:600px;
+  width:400px!important;
+  background:#FFF;
+  border:solid 5px #999;
+  color:#000;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  border-radius:5px; }
+
+#popup_title,.popup_title
+{ text-align:center;
+  font-size:15px;
+  font-weight:bold;
+  line-height:2.0em;
+  color:#fff;
+  background:#006892;
+  border:solid 1px #FFF;
+  border-bottom:solid 1px #999;
+  cursor:default;
+  padding:0;
+  margin:0; }
+
+
+#popup_content
+{ background:16px 16px no-repeat url(img/info.png);
+  padding:1em 1.75em;
+  margin:0; }
+
+#popup_content.alert
+{ background-image:url(../img/info.png); }
+
+#popup_content.confirm
+{ background-image:url(../img/important.gif); }
+
+#popup_content.prompt
+{ background-image:url(../img/help.gif); }
+
+#popup_message
+{ padding-left:48px;
+  text-align:left;
+  font-size:12px;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  color:#434343; 
+}
+
+#popup_message li
+{ list-style-type:disc;
+  list-style-position:inside;
+  text-align:left; }
+
+#popup_panel
+{ text-align:center;
+  margin:1em 0 0 1em; }

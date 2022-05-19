@@ -1,0 +1,1 @@
+# en la carpeta core comienza la ruta de los controladores y modelos

@@ -1,0 +1,24 @@
+    .form-top {
+        color: white;
+        opacity: 1
+    }
+
+    p {
+        color: white;
+
+    }
+
+    .top-content .description p {
+        opacity: 1
+    }
+
+    .shadow {
+        background: #00000042;
+        padding: 10px 51px;
+        border-radius: 10px;
+    }
+
+    .control-label {
+        color: white;
+        text-align: center !important;
+    }
