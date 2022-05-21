@@ -25,6 +25,9 @@
      .finalizado {
          background-color: rgb(142, 190, 245) !important;
      }
+     .main-container{
+         min-height:10px;
+     }
  </style>
  <script>
      $(function() {
@@ -253,7 +256,35 @@
                              <button type="submit" class="btn btn-success" id="guardar">CONFIRMAR UBIGEO Y UBICACIÓN</button>
 
                          </div>
+                         
                      </form>
+                          <!-- calendario -->
+                        <form action="" method="POST" id="form_programar">
+                            <div class="content">
+                                <div class="container text-left">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10 text-center">
+                                            <h2 class="mb-5 text-center">Calendario para Agendar Inventariado</h2>
+                                            <!-- <input type="text" name="fecha" class="form-control w-25 mx-auto mb-3" id="result" placeholder="Seleccionar Fecha" value="<?php echo date('d/m/Y') ?>"> -->
+                                            <!-- <form action="#" class="row">
+                                                <div class="col-md-12">
+                                                    <div id="inline_cal"></div>
+                                                </div>
+                                            </form> -->
+
+                                                <input type="text" class="form-control w-25 mx-auto mb-3" id="result" name="fecha" value="" />
+
+                                            <div style="text-align: center;">
+                                                <button type="submit" class="btn btn-success" id="agendar">AGENDAR INVENTARIADO</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </form>
+
+     <!-- calendario -->
                  </div>
              </div>
          </div>
@@ -290,27 +321,10 @@
      <div class="col-sm-6">
 
      </div>
-     <form action="" method="POST" id="form_programar">
-         <div class="content">
-             <div class="container text-left">
-                 <div class="row justify-content-center">
-                     <div class="col-md-10 text-center">
-                         <h2 class="mb-5 text-center">Calendario para Agendar Inventariado</h2>
-                         <input type="text" name="fecha" class="form-control w-25 mx-auto mb-3" id="result" placeholder="Seleccionar Fecha" value="<?php echo date('Y-m-d') ?>">
-                         <form action="#" class="row">
-                             <div class="col-md-12">
-                                 <div id="inline_cal"></div>
-                             </div>
-                         </form>
-                         <div style="text-align: center;">
-                             <button type="submit" class="btn btn-success" id="agendar">AGENDAR INVENTARIADO</button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
- </div>
- </form>
+
+
+
+
  <!--    MODAL ELIMINAR-->
  <div class="modal fade" tabindex="-1" role="dialog" id="miModal">
      <div class="modal-dialog">
@@ -334,5 +348,57 @@
          margin: 0 auto;
      }
  </style>
- <script src="calendario/js/rome.js"></script>
- <script src="calendario/js/main.js"></script>
+
+ 
+    <script>
+        // 2022-05-21
+    $(function() {
+    $('input[name="fecha"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 2000,
+         "locale": {
+                        "format": "YYYY-MM-DD",
+                        "separator": "-",
+                        "applyLabel": "Ok",
+                        "cancelLabel": "Cancelar",
+                        "fromLabel": "Desde",
+                        "toLabel": "Hasta",
+                        "customRangeLabel": "Otras",
+                        "daysOfWeek": [
+                            "Do",
+                            "LU",
+                            "MA",
+                            "MI",
+                            "JU",
+                            "VI",
+                            "SA"
+                        ],
+                        "monthNames": [
+                            "Enero",
+                            "Febrero",
+                            "Marzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ],
+                        "firstDay": 1
+                    },
+                   
+             minDate: '2019-01-01',
+             maxDate: moment(new Date()).add('days', 360).format('YYYY/MM/DD'),
+    }, function(start, end, label) {
+        $("#result").val(start.format('YYYY-MM-DD'))
+        var years = moment().diff(start, 'years');
+        // alert("You are " + years + " years old!");
+    });
+    });
+    </script>
+ <!-- <script src="calendario/js/rome.js"></script> -->
+ <!-- <script src="calendario/js/main.js"></script> -->

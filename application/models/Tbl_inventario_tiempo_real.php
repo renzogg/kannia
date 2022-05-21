@@ -190,7 +190,7 @@ class Tbl_inventario_tiempo_real extends CI_Model
     public function get_inventario_programado()
     {
         try {
-            $sql = "SELECT id,usuario, ubigeo, ubicacion, fecha_inventario,fecha_programacion,status FROM tbl_inventario_tiempo_real ";
+            $sql = "SELECT id,usuario, ubigeo, ubicacion, fecha_inventario,fecha_programacion,status FROM tbl_inventario_tiempo_real order by id desc ";
             $query = $this->db->query($sql);
             return $query->result_array();
         } catch (Exception $e) {

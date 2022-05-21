@@ -26,6 +26,7 @@
         href="<?php echo base_url(); ?>static/main/js/datatable/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
         href="<?php echo base_url(); ?>static/main/js/datatable/css/buttons.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <!--Stylos de los botones input  -->
     <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>static/main/metro-all.min.css"> -->
@@ -61,6 +62,10 @@
     <script src="<?php echo base_url(); ?>static/main/js/themeSwitcher.js"></script>
     <script src="<?php echo base_url(); ?>static/main/js/common.js"></script>
     <script src="<?php echo base_url(); ?>static/main/admin.plugins.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
     <!------------->
     <!-- script botton style -->
     <!-- <script src="<?php echo base_url(); ?>static/main/metro.min.js"></script> -->
@@ -279,7 +284,7 @@
                             </a>
                         </li>
                         <!-- <li>
-                     <a href="admin/paciente">
+                    <a href="admin/paciente">
                         <i class="icon-home2"></i>
                         Control de Pacientes - RFID TIEMPO REAL
                      </a>
