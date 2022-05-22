@@ -99,7 +99,7 @@
          console.log(datos);
          $.ajax({
             type: "POST",
-            url: "admin/vinculacion/agregar_actividad",
+            url: "admin/vinculacion/agregar_actividad2",
             data: datos,
             dataType: "json",
             success: function(resultado) {
@@ -159,6 +159,7 @@
                      </div>
                      <button type="submit" class="btn btn-success" id="guardar">IR A PROGRAMACIÓN DE SALIDAS</button>
                   </div>
+            
                </form>
             </div>
          </div>

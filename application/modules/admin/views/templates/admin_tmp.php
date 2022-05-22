@@ -284,7 +284,7 @@
                             </a>
                         </li>
                         <!-- <li>
-                    <a href="admin/paciente">
+                     <a href="admin/paciente">
                         <i class="icon-home2"></i>
                         Control de Pacientes - RFID TIEMPO REAL
                      </a>

@@ -57,11 +57,13 @@ class Tbl_inventario extends CI_Model
         }
     }
     
-    function get_lista_activos_matriculados()
+    function get_lista_activos_matriculados($ubigeo,$ubicacion,$fecha)
     {
         try {
 
-            $sql = "SELECT tbl_activos_abc_logistics.id as id,tbl_activos_abc_logistics.descripcion as descripcion,tbl_activos_abc_logistics.cliente as cliente,tbl_activos_abc_logistics.codigo as codigo_producto,tbl_activos_abc_logistics.unidad_medida as unidad_medida,tbl_activos_abc_logistics.cantidad as cantidad,tbl_vinculacion.codigo_rfid as codigo_rfid,tbl_activos_abc_logistics.valor as valor,tbl_activos_abc_logistics.ubigeo as ubigeo,tbl_activos_abc_logistics.ubicacion as ubicacion,tbl_activos_abc_logistics.peso as peso,tbl_activos_abc_logistics.ancho as ancho,tbl_activos_abc_logistics.profundidad as profundidad,tbl_activos_abc_logistics.lote as lote,tbl_activos_abc_logistics.orden_ingreso as orden_ingreso,tbl_activos_abc_logistics.estado as estado,tbl_activos_abc_logistics.programacion as programacion,tbl_activos_abc_logistics.fecha_ingreso as fecha_ingreso,tbl_activos_abc_logistics.estado_lectura as estado_lectura FROM tbl_activos_abc_logistics inner join tbl_vinculacion on tbl_vinculacion.id_activo=tbl_activos_abc_logistics.id where tbl_activos_abc_logistics.estado = '1' order by fecha_ingreso desc";
+            $sql = "SELECT tbl_activos_abc_logistics.id as id,tbl_activos_abc_logistics.descripcion as descripcion,tbl_activos_abc_logistics.cliente as cliente,tbl_activos_abc_logistics.codigo as codigo_producto,tbl_activos_abc_logistics.unidad_medida as unidad_medida,tbl_activos_abc_logistics.cantidad as cantidad,tbl_vinculacion.codigo_rfid as codigo_rfid,tbl_activos_abc_logistics.valor as valor,tbl_activos_abc_logistics.ubigeo as ubigeo,tbl_activos_abc_logistics.ubicacion as ubicacion,tbl_activos_abc_logistics.peso as peso,tbl_activos_abc_logistics.ancho as ancho,tbl_activos_abc_logistics.profundidad as profundidad,tbl_activos_abc_logistics.lote as lote,tbl_activos_abc_logistics.orden_ingreso as orden_ingreso,tbl_activos_abc_logistics.estado as estado,tbl_activos_abc_logistics.programacion as programacion,tbl_activos_abc_logistics.fecha_ingreso as fecha_ingreso,tbl_activos_abc_logistics.estado_lectura as estado_lectura FROM tbl_activos_abc_logistics inner join tbl_vinculacion on tbl_vinculacion.id_activo=tbl_activos_abc_logistics.id where tbl_activos_abc_logistics.estado = '1'
+            and  tbl_activos_abc_logistics.ubigeo='".$ubigeo."'  and tbl_activos_abc_logistics.ubicacion='".$ubicacion."'
+             order by fecha_ingreso desc";
             $query = $this->db->query($sql);
             return $query->result_array();
         } catch (Exception $e) {

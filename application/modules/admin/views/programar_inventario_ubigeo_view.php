@@ -232,10 +232,10 @@
                      <h4>FORMULARIO DE ELECCIÓN DE UBIGEO - UBICACIÓN</h4>
                  </div>
                  <div class="panel-body">
-                     <form class="form-horizontal" id="form_programacion" method="post" action="<?php echo base_url('admin/vinculacion/agregar_actividad') ?>" enctype="multipart/form-data">
+                     <form class="form-horizontal" method="post" action="<?php echo base_url('admin/vinculacion/agregar_actividad') ?>" enctype="multipart/form-data">
                          <div class="form-group">
                              <label for="inputEmail3" class="col-sm-2 control-label">Ubigeo</label>
-                             <div class="col-sm-7 ">
+                             <div class="col-sm-5 ">
                                  <select class="form-control" name="ubigeo" id="ubigeo" required>
                                      <option value="">ELEGIR</option>
                                      <?php foreach ($atributos as $indice => $sub_atributos) : ?>
@@ -247,32 +247,46 @@
                          </div>
                          <div class="form-group">
                              <label for="inputEmail3" class="col-sm-2 control-label">Ubicación</label>
-                             <div class="col-sm-7 ">
+                             <div class="col-sm-5 ">
                                  <select class="form-control" name="ubicacion" id="ubicacion">
                                      <option value=""></option>
                                  </select>
                                  <?php echo form_error('ubicacion', '<span class="label label-danger	">', '</span>'); ?>
                              </div>
-                             <button type="submit" class="btn btn-success" id="guardar">CONFIRMAR UBIGEO Y UBICACIÓN</button>
 
+
+                           
+
+                         </div>
+                         <div class="form-group">
+                                <div class="col-md-10 text-center">
+                                            <!-- <h2 class="mb-5 text-center">Calendario para Agendar Inventariado</h2> -->
+                                      <label for="inputEmail3" class="col-sm-2 control-label">Agendar Inventariado</label>
+                                      <div class="col-sm-5 ">
+                                     
+                                          <input type="text" class="form-control " id="result" name="fechaAgendar" value="" />
+                                    </div>
+
+                                                     <div class="col-sm-3 ">
+                                    <button type="submit" class="btn btn-success" id="guardar">AGENDAR INVENTARIADO, UBIGEO Y UBICACIÓN</button>
+                         
+                                 </div>
+                                            <!-- <div style="text-align: center;">
+                                                <button type="submit" class="btn btn-success" id="agendar">AGENDAR INVENTARIADO</button>
+                                            </div> -->
+                                </div>
                          </div>
                          
                      </form>
                           <!-- calendario -->
-                        <form action="" method="POST" id="form_programar">
+                        <!-- <form action="" method="POST" id="form_programar">
                             <div class="content">
                                 <div class="container text-left">
                                     <div class="row justify-content-center">
                                         <div class="col-md-10 text-center">
                                             <h2 class="mb-5 text-center">Calendario para Agendar Inventariado</h2>
-                                            <!-- <input type="text" name="fecha" class="form-control w-25 mx-auto mb-3" id="result" placeholder="Seleccionar Fecha" value="<?php echo date('d/m/Y') ?>"> -->
-                                            <!-- <form action="#" class="row">
-                                                <div class="col-md-12">
-                                                    <div id="inline_cal"></div>
-                                                </div>
-                                            </form> -->
-
-                                                <input type="text" class="form-control w-25 mx-auto mb-3" id="result" name="fecha" value="" />
+                                     
+                                                <input type="text" class="form-control w-25 mx-auto mb-3" id="result" name="fechaAgendar" value="" />
 
                                             <div style="text-align: center;">
                                                 <button type="submit" class="btn btn-success" id="agendar">AGENDAR INVENTARIADO</button>
@@ -281,8 +295,8 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                    </form>
+                            </div>
+                     </form> -->
 
      <!-- calendario -->
                  </div>
@@ -353,7 +367,7 @@
     <script>
         // 2022-05-21
     $(function() {
-    $('input[name="fecha"]').daterangepicker({
+    $('input[name="fechaAgendar"]').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         minYear: 2000,

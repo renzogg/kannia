@@ -960,7 +960,7 @@ class Inventario_tiempo_real extends MX_Controller
                 $rpta = 'Error de Transacción';
             }
             echo json_encode(array("respuesta" => $rpta));
-            //redirect('admin/tiemporeal/inventario_tiempo_real');
+            // redirect('admin/tiemporeal/programacion_inventario_tiempo_real');
         }
     }
     public function reiniciar_inventariado_antiguo()

@@ -3,14 +3,189 @@
         <center>SALIDA PROGRAMADA DE ACTIVOS MATRICULADOS</center>
     </h1>
 </div>
+
+   <div class="panel-body">
+               <form class="form-horizontal" id="form_programacion" method="post" action="<?php  ?>" enctype="multipart/form-data">
+                  <div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2 control-label">Ubigeo</label>
+                     <div class="col-sm-7 ">
+                        <select class="form-control" name="ubigeo" id="ubigeo" required>
+                        <option value="">ELEGIR</option>
+                        
+                           <?php foreach ($atributos as $indice => $sub_atributos) : ?>
+                              <option value="<?php echo $atributos[$indice]['ubigeo']; ?>"><?php echo $atributos[$indice]['ubigeo']; ?></option>
+                           <?php endforeach ?>
+                        </select>
+                        <?php echo form_error('ubigeo', '<span class="label label-danger	">', '</span>'); ?>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2 control-label">Ubicación</label>
+                     <div class="col-sm-7 ">
+                        <select class="form-control" name="ubicacion" id="ubicacion">
+                           <option value=""></option>
+                        </select>
+                        <?php echo form_error('ubicacion', '<span class="label label-danger	">', '</span>'); ?>
+                     </div>
+
+
+                </div>
+                      <div class="form-group">
+                         <label for="inputEmail3" class="col-sm-2 control-label">fecha</label>
+                                      <div class="col-sm-5 ">
+                                     
+                                          <input type="text" class="form-control " id="result" name="fechaAgendar" value="" />
+                                    </div>
+                  </div>
+                <div class="form-group">
+                     <label  class="col-sm-2 control-label">   </label>
+                     <input type="button" class="btn btn-success" id="mostrar" VALUE="Mostrar">
+                  </div>
+
+                  
+               </form>
+    </div>
+
 <br>
+
+<div class="main-container">
+    <div class="row gutter">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-light panel-facebook">
+                <div class="panel-heading">
+                    <h4>Tabla de Vinculación de Activos</h4>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table success table-striped no-margin text-center" id="tbl_vinculacion" class="display">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">ITEM</th>
+                                <th style="text-align:center">CÓDIGO DE PRODUCTO</th>
+                                <th style="text-align:center">CÓDIGO RFID</th>
+                                <th style="text-align:center">DESCRIPCIÓN DE ACTIVO</th>
+                                <th style="text-align:center">GUÍA DE REMISIÓN</th>
+                                <th style="text-align:center">FECHA DE INGRESO</th>
+                                <th style="text-align:center">FECHA DE SALIDA PROGRAMADA</th>
+                                <th style="text-align:center">ORDEN DE SALIDA</th>
+                                <th style="text-align:center">DESVINCULAR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    MODAL ELIMINAR-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="miModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>¿Desea dar salida al activo?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <a type="button" class="btn btn-primary eliminar">Dar Salida</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
 <script>
-    $(function() {
-        let repetir = function() {
+
+        $(function() {
+         $('input[name="fechaAgendar"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 2000,
+         "locale": {
+                        "format": "YYYY-MM-DD",
+                        "separator": "-",
+                        "applyLabel": "Ok",
+                        "cancelLabel": "Cancelar",
+                        "fromLabel": "Desde",
+                        "toLabel": "Hasta",
+                        "customRangeLabel": "Otras",
+                        "daysOfWeek": [
+                            "Do",
+                            "LU",
+                            "MA",
+                            "MI",
+                            "JU",
+                            "VI",
+                            "SA"
+                        ],
+                        "monthNames": [
+                            "Enero",
+                            "Febrero",
+                            "Marzo",
+                            "Abril",
+                            "Mayo",
+                            "Junio",
+                            "Julio",
+                            "Agosto",
+                            "Septiembre",
+                            "Octubre",
+                            "Noviembre",
+                            "Diciembre"
+                        ],
+                        "firstDay": 1
+                    },
+                   
+             minDate: '2019-01-01',
+             maxDate: moment(new Date()).add('days', 360).format('YYYY/MM/DD'),
+    }, function(start, end, label) {
+        $("#result").val(start.format('YYYY-MM-DD'))
+        var years = moment().diff(start, 'years');
+        // alert("You are " + years + " years old!");
+    });
+    });
+
+    var ubicacion = $('#ubicacion');
+                  
+      $("#ubigeo").change(function() {
+         var ubigeo = $(this).val(); //obtener el id seleccionado
+         if (ubigeo != "") { //verificar haber seleccionado una opcion valida
+            /*Inicio de llamada ajax*/
             $.ajax({
+               url: '<?php echo site_url('admin/vinculacion/listar_ubicacion'); ?>', //url que recibe las variables
+               data: {
+                  ubigeo: $("#ubigeo").val()
+               }, //variables o parametros a enviar, formato => nombre_de_variable:contenido
+               type: "post", //mandar variables como post o get
+               dataType: "JSON", //tipo de datos que esperamos de regreso
+               success: function(response) {
+                  console.log(response);
+                  $("#ubicacion").html('');
+                  if (response != '') {
+                     $("#ubicacion").append(new Option(response), response);
+                  }
+               }
+            });
+            /*fin de llamada ajax*/
+         } else {
+            alert("Eliga el Ubigeo");
+            ubicacion.val(''); //seleccionar la opcion "- Seleccione -", osea como reiniciar la opcion del select
+         }
+      });
+
+ let mostrar = document.getElementById("mostrar")
+
+             mostrar.addEventListener("click",()=>{
+            let ubicacion2 = document.getElementById("ubicacion").value
+            let ubigeo2 = document.getElementById("ubigeo").value
+            let fecha2 = document.getElementById("result").value
+
+
+                  $.ajax({
                 url: "admin/vinculacion/get_activos_matriculados_fecha_salida",
                 type: "post",
-                data: {},
+                   data: {
+                      ubigeo: ubigeo2,
+                      ubicacion:ubicacion2,
+                      fecha:fecha2
+                 },
                 dataType: "json",
                 success: function(response) {
                     var respuesta = response.data;
@@ -85,57 +260,12 @@
                     });
                 }
             });
-        }
-        repetir();
-    });
+
+
+        });
+
+
 </script>
-<!--PARA VER ERRORES-->
-<!--<pre>
-	<?php
-    echo print_r($codigo);
-    ?>
-    </pre>-->
-<div class="main-container">
-    <div class="row gutter">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="panel panel-light panel-facebook">
-                <div class="panel-heading">
-                    <h4>Tabla de Vinculación de Activos</h4>
-                </div>
-                <div class="panel-body table-responsive">
-                    <table class="table success table-striped no-margin text-center" id="tbl_vinculacion" class="display">
-                        <thead>
-                            <tr>
-                                <th style="text-align:center">ITEM</th>
-                                <th style="text-align:center">CÓDIGO DE PRODUCTO</th>
-                                <th style="text-align:center">CÓDIGO RFID</th>
-                                <th style="text-align:center">DESCRIPCIÓN DE ACTIVO</th>
-                                <th style="text-align:center">GUÍA DE REMISIÓN</th>
-                                <th style="text-align:center">FECHA DE INGRESO</th>
-                                <th style="text-align:center">FECHA DE SALIDA PROGRAMADA</th>
-                                <th style="text-align:center">ORDEN DE SALIDA</th>
-                                <th style="text-align:center">DESVINCULAR</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpo">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--    MODAL ELIMINAR-->
-    <div class="modal fade" tabindex="-1" role="dialog" id="miModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h4>¿Desea dar salida al activo?</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <a type="button" class="btn btn-primary eliminar">Dar Salida</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</div>
+
+
+   

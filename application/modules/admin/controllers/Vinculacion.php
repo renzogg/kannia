@@ -31,6 +31,7 @@ class Vinculacion extends MX_Controller
         //print_r($atributos);
         $this->load->tmp_admin->setLayout('templates/admin_tmp');
         $this->load->tmp_admin->render('programar_salidas_view');
+        // $this->load->tmp_admin->render('programar_dar_salida_automatica_view');
     }
     public function listar_ubicacion()
     {
@@ -44,6 +45,20 @@ class Vinculacion extends MX_Controller
         $arrayResult = $ubicacion;
         echo json_encode($arrayResult);
     }
+      public function listar_ubicacion2()
+    {
+        $this->load->model('tbl_vinculacion');
+        $this->load->tmp_admin->setLayout('templates/admin_tmp');
+        $ubigeo = $_POST['ubigeo'];
+        $actividad = "SALIDA DE ACTIVOS";
+        $ubicacion = $this->obj_vinculo->get_ubicacion_ubigeo($ubigeo, $actividad);
+        $ubicacion = $ubicacion[0]["ubicacion"];
+        //print_r($ubicacion);
+        $arrayResult = $ubicacion;
+        echo json_encode($arrayResult);
+    }
+    
+    
     public function listar_ubicacion_tiempo_real()
     {
         $this->load->model('tbl_vinculacion');
@@ -77,6 +92,8 @@ class Vinculacion extends MX_Controller
     public function programar_salida_manual()
     {
         $this->load->model('tbl_dispositivo_rfid');
+        $atributos = $this->obj_vinculo->get_atributos_actividad("SALIDA DE ACTIVOS");
+        $this->load->tmp_admin->set('atributos', $atributos);
         $this->load->tmp_admin->setLayout('templates/admin_tmp');
         $this->load->tmp_admin->render('programar_salida_manual_view');
     }
@@ -202,6 +219,8 @@ class Vinculacion extends MX_Controller
     public function eliminar_vinculo()
     {
         $this->load->model('tbl_vinculacion');
+        $atributos = $this->obj_vinculo->get_atributos_actividad("PROGRAMACION DE SALIDA");
+        $this->load->tmp_admin->set('atributos', $atributos);
         $this->load->tmp_admin->setLayout('templates/admin_tmp');
         $this->load->tmp_admin->render('eliminar_vinculo_view');
     }
@@ -508,11 +527,17 @@ class Vinculacion extends MX_Controller
         $this->load->tmp_admin->setLayout('templates/admin_tmp');
         $tabla = "";
         $i = 0;
-        $lista = $this->tbl_vinculacion->get_lista_activos_matriculados_fecha_salida();
+        //print_r($elegido);
 
-        /*echo "<pre>";
+       $ubigeo =$this->input->post('ubigeo');
+       $ubicacion =$this->input->post('ubicacion');
+       $fecha =$this->input->post('fecha');
+  
+        $lista = $this->tbl_vinculacion->get_lista_activos_matriculados_fecha_salida($ubigeo,$ubicacion,$fecha);
+
+        echo "<pre>";
         print_r($lista);
-        echo "</pre>"; */
+        echo "</pre>"; 
         foreach ($lista as $row) {
             $fecha_salida = $this->obj_vinculo->get_fecha_orden_salida($row['id']);
             if (empty($fecha_salida)) {
@@ -819,7 +844,7 @@ class Vinculacion extends MX_Controller
         }
         echo json_encode(array("respuesta" => $rpta));
     }
-    public function agregar_actividad()
+      public function agregar_actividad2()
     {
         $this->load->model('tbl_vinculacion');
         $data = array(
@@ -827,6 +852,7 @@ class Vinculacion extends MX_Controller
             'ubicacion' => $this->input->post('ubicacion'),
             'actividad' => "PROGRAMACION DE SALIDA"
         );
+
         try {
             $result =  $this->tbl_vinculacion->add_actividad_actual($data);
             if ($result)
@@ -836,15 +862,87 @@ class Vinculacion extends MX_Controller
         } catch (Exception $e) {
             $rpta = 'Error de Transacción';
         }
+
         echo json_encode(array("respuesta" => $rpta));
+    }
+    public function agregar_actividad()
+    {
+        $this->load->model('tbl_vinculacion');
+        $data = array(
+            'ubigeo' => $this->input->post('ubigeo'),
+            'ubicacion' => $this->input->post('ubicacion'),
+            'actividad' => "PROGRAMACION DE SALIDA"
+        );
+
+        try {
+            $result =  $this->tbl_vinculacion->add_actividad_actual($data);
+            if ($result)
+                $rpta = "REDIRECCIONANDO ...";
+            else
+                $rpta = "Error al guardar la información";
+        } catch (Exception $e) {
+            $rpta = 'Error de Transacción';
+        }
+        /**
+         * Agregando add_programacion_inventario
+         */
+
+         $this->load->model('tbl_inventario_tiempo_real');
+        $this->load->model('tbl_vinculacion');
+        $this->load->tmp_admin->setLayout('templates/admin_tmp');
+        if ($_POST) {
+            $user = $this->session->userdata('usuario');
+            $fecha = $_POST["fechaAgendar"];
+            $actividad = "INVENTARIADO";
+            $actividad_actual = $this->tbl_vinculacion->get_actividad_actual($actividad);
+            $ubigeo = $actividad_actual[0]["ubigeo"];
+            $ubicacion = $actividad_actual[0]["ubicacion"];
+
+            //INSERCIÓN EN BASE DE DATOS - SALIDAS MySql
+            $data = array(
+                'usuario' => $user,
+                'fecha_inventario' => $fecha,
+                'ubigeo' => $ubigeo,
+                'ubicacion' => $ubicacion
+            );
+            try {
+                $result =  $this->tbl_inventario_tiempo_real->add_programacion_inventario($data);
+                if ($result)
+                    $rpta = "Se agendo inventariado correctamente";
+                else
+                    $rpta = "Error al agendar inventariado";
+            } catch (Exception $e) {
+                $rpta = 'Error de Transacción';
+            }
+
+            echo json_encode(array("respuesta" => $rpta));
+            redirect('admin/tiemporeal/programacion_inventario_tiempo_real');
+            //redirect('admin/tiemporeal/inventario_tiempo_real');
+        }
+
+        /**
+        * Agregando add_programacion_inventario
+         */
+
+
+        // echo json_encode(array("respuesta" => $rpta));
     }
     public function get_activos_matriculados()
     {
         $this->load->model('tbl_inventario');
         $this->load->tmp_admin->setLayout('templates/admin_tmp');
+            $data = array(
+            'ubigeo' => $this->input->post('ubigeo'),
+            'ubicacion' => $this->input->post('ubicacion'),
+            'fecha' =>  $this->input->post('fecha')
+        );
+$ubigeo = $this->input->post('ubigeo');
+$ubicacion = $this->input->post('ubicacion');
+   $fecha = $this->input->post('fecha');
+
         $tabla = "";
         $i = 0;
-        $lista = $this->tbl_inventario->get_lista_activos_matriculados();
+        $lista = $this->tbl_inventario->get_lista_activos_matriculados($ubigeo,$ubicacion,$fecha);
         //print_r($lista);
         foreach ($lista as $row) {
             $i++;

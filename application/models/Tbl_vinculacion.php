@@ -33,11 +33,13 @@ class Tbl_vinculacion extends CI_Model
             return false;
         }
     }
-    function get_lista_activos_matriculados_fecha_salida()
+    function get_lista_activos_matriculados_fecha_salida($ubigeo,$ubicacion,$fecha)
     {
+        
         try {
 
-            $sql = "SELECT tbl_activos_abc_logistics.id as id,tbl_activos_abc_logistics.descripcion as descripcion,tbl_activos_abc_logistics.cliente as cliente,tbl_activos_abc_logistics.codigo as codigo_producto,tbl_vinculacion.codigo_rfid as codigo_rfid,tbl_activos_abc_logistics.ubicacion as ubicacion,tbl_activos_abc_logistics.lote as lote,tbl_activos_abc_logistics.orden_ingreso as orden_ingreso,tbl_activos_abc_logistics.guia_remision as guia_remision,tbl_activos_abc_logistics.estado as estado,tbl_activos_abc_logistics.programacion as programacion,tbl_activos_abc_logistics.fecha_ingreso as fecha_ingreso FROM tbl_activos_abc_logistics inner join tbl_vinculacion on tbl_vinculacion.id_activo=tbl_activos_abc_logistics.id WHERE tbl_activos_abc_logistics.estado = '1'  order by fecha_ingreso asc";
+            $sql = "SELECT tbl_activos_abc_logistics.id as id,tbl_activos_abc_logistics.descripcion as descripcion,tbl_activos_abc_logistics.cliente as cliente,tbl_activos_abc_logistics.codigo as codigo_producto,tbl_vinculacion.codigo_rfid as codigo_rfid,tbl_activos_abc_logistics.ubicacion as ubicacion,tbl_activos_abc_logistics.lote as lote,tbl_activos_abc_logistics.orden_ingreso as orden_ingreso,tbl_activos_abc_logistics.guia_remision as guia_remision,tbl_activos_abc_logistics.estado as estado,tbl_activos_abc_logistics.programacion as programacion,tbl_activos_abc_logistics.fecha_ingreso as fecha_ingreso FROM tbl_activos_abc_logistics inner join tbl_vinculacion on tbl_vinculacion.id_activo=tbl_activos_abc_logistics.id WHERE tbl_activos_abc_logistics.estado = '1'  and tbl_activos_abc_logistics.ubigeo='".$ubigeo."' and tbl_activos_abc_logistics.ubicacion='".$ubicacion."' order by fecha_ingreso asc";
+            print_r($sql);
             $query = $this->db->query($sql);
             return $query->result_array();
         } catch (Exception $e) {
