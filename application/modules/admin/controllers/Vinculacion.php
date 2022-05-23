@@ -535,9 +535,6 @@ class Vinculacion extends MX_Controller
   
         $lista = $this->tbl_vinculacion->get_lista_activos_matriculados_fecha_salida($ubigeo,$ubicacion,$fecha);
 
-        echo "<pre>";
-        print_r($lista);
-        echo "</pre>"; 
         foreach ($lista as $row) {
             $fecha_salida = $this->obj_vinculo->get_fecha_orden_salida($row['id']);
             if (empty($fecha_salida)) {
@@ -1082,23 +1079,27 @@ $ubicacion = $this->input->post('ubicacion');
     {
         $this->load->model('tbl_vinculacion');
         $this->load->model('tbl_inventario');
+      
         $orden_salida = $this->obj_vinculo->get_orden_salida($cod_rfid);
-        //print_r($orden_salida);
+        // print_r($orden_salida);
         if (empty($orden_salida)) {
             $cod_producto = $this->obj_vinculo->get_cod_producto($cod_rfid);
-            //print_r($cod_producto);
+            // $cod_producto = $this->obj_vinculo->get_cod_producto_rfid($cod_rfid);
+            // print_r($cod_producto);
             $atributos_producto = $this->obj_vinculo->get_atributos_vinculado_producto_abc($cod_producto[0]["id_activo"]);
-            print_r($atributos_producto);
+            // print_r($atributos_producto);
             $status_salida = "1";
             $status = "0";
-            $fecha = date('Y-m-d H:m:s');
-            echo "<pre>";
-            print_r($fecha);
-            echo "</pre>";
+            // $fecha = date('Y-m-d H:m:s');
+            $fecha = date('Y-m-d');
+            // echo "<pre>";
+            // print_r($fecha);
+            // echo "</pre>";
             $orden_salida = $fecha . "--" . $cod_producto[0]["codigo_producto"];
             $data = array(
-                'codigo_rfid' => $cod_rfid,
-                'codigo_producto' => $cod_producto[0]["codigo_producto"],
+               'codigo_rfid'=>$atributos_producto[0]["codigo_rfid"],
+                'id_activo'=>$atributos_producto[0]["id"],
+                'codigo_producto' => $atributos_producto[0]["codigo"],
                 'descripcion' => $atributos_producto[0]['descripcion'],
                 'orden_ingreso' => $atributos_producto[0]['orden_ingreso'],
                 'orden_salida' => $orden_salida,
@@ -1107,15 +1108,16 @@ $ubicacion = $this->input->post('ubicacion');
             );
             try {
                 $this->tbl_vinculacion->add_salida($data);
-                $this->obj_inventario->update_status_salida($cod_producto[0]["codigo_producto"], $status_salida);
-                $this->tbl_inventario->update_status_programacion_abc($cod_producto[0]["codigo_producto"], $status);
-                $this->obj_inventario->update_status_abc($cod_producto[0]["codigo_producto"], $status);
+                // $this->obj_inventario->update_status_salida($cod_producto[0]["id_activo"], $status_salida);
+                $this->tbl_inventario->update_status_programacion_abc($cod_producto[0]["id_activo"], $status_salida);
+                $this->obj_inventario->update_status_abc($cod_producto[0]["id_activo"], 1);
                 $this->obj_vinculo->eliminar($cod_rfid);
                 redirect('admin/vinculacion/eliminar_vinculo');
             } catch (Exception $e) {
                 $rpta = 'Error de Transacción';
             }
         } else {
+            // echo empty($orden_salida);
             $status = "0";
             $status1 = "1";
             $cod_producto = $this->obj_vinculo->get_cod_producto($cod_rfid);

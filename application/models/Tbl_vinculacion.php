@@ -39,7 +39,7 @@ class Tbl_vinculacion extends CI_Model
         try {
 
             $sql = "SELECT tbl_activos_abc_logistics.id as id,tbl_activos_abc_logistics.descripcion as descripcion,tbl_activos_abc_logistics.cliente as cliente,tbl_activos_abc_logistics.codigo as codigo_producto,tbl_vinculacion.codigo_rfid as codigo_rfid,tbl_activos_abc_logistics.ubicacion as ubicacion,tbl_activos_abc_logistics.lote as lote,tbl_activos_abc_logistics.orden_ingreso as orden_ingreso,tbl_activos_abc_logistics.guia_remision as guia_remision,tbl_activos_abc_logistics.estado as estado,tbl_activos_abc_logistics.programacion as programacion,tbl_activos_abc_logistics.fecha_ingreso as fecha_ingreso FROM tbl_activos_abc_logistics inner join tbl_vinculacion on tbl_vinculacion.id_activo=tbl_activos_abc_logistics.id WHERE tbl_activos_abc_logistics.estado = '1'  and tbl_activos_abc_logistics.ubigeo='".$ubigeo."' and tbl_activos_abc_logistics.ubicacion='".$ubicacion."' order by fecha_ingreso asc";
-            print_r($sql);
+           
             $query = $this->db->query($sql);
             return $query->result_array();
         } catch (Exception $e) {
@@ -255,6 +255,16 @@ class Tbl_vinculacion extends CI_Model
             return false;
         }
     }
+       public function get_cod_producto_rfid($cod_rfid)
+    {
+        try {
+            $sql = "SELECT id_activo, codigo_producto FROM tbl_vinculacion WHERE codigo_rfid = '" . $cod_rfid . "'";
+            $query = $this->db->query($sql);
+            return $query->result_array();
+        } catch (Exception $e) {    
+            return false;
+        }
+    }
      public function get_id_producto($cod_rfid)
     {
         try {
@@ -278,7 +288,7 @@ class Tbl_vinculacion extends CI_Model
     public function get_atributos_vinculado_producto_abc($id_producto)
     {
         try {
-            $sql = "SELECT id,codigo,descripcion,guia_remision,orden_ingreso,item FROM tbl_activos_abc_logistics WHERE id = '" . $id_producto . "'";
+            $sql = "SELECT tbl.id,tbl.codigo,tbl.descripcion,tbl.guia_remision,tbl.orden_ingreso,tbl.item,v.codigo_rfid FROM tbl_activos_abc_logistics tbl join tbl_vinculacion v on v.id_activo = tbl.id WHERE tbl.id = '" . $id_producto . "'";
             $query = $this->db->query($sql);
             return $query->result_array();
         } catch (Exception $e) {
